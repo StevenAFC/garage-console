@@ -1,6 +1,5 @@
 import React from 'react';
-import logo from './logo.svg';
-import TemperatureChart from './TemperatureChart'
+import TemperatureList from './TemperatureList'
 import './App.css';
 
 function App() {
@@ -9,7 +8,7 @@ function App() {
       <header className="App-header">
         <button>Lights On</button>
         <button>Lights Off</button>
-        <TemperatureChart />
+        <TemperatureList />
       </header>
     </div>
   );
