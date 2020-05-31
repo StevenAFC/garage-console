@@ -47,7 +47,7 @@ const TemperatureChart = () => {
 
   return (
     <ResponsiveContainer height={350}>
-      <AreaChart width={500} height={300} data={chartData}>
+      <AreaChart data={chartData}>
         <XAxis 
           dataKey="time"
           domain = {['auto', 'auto']}

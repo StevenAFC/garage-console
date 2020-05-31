@@ -1,5 +1,6 @@
 import React from 'react';
 import TemperatureChart from './TemperatureChart'
+import ComputerTemperatureChart from './ComputerTemperatureChart'
 import { Button, Grid, Segment } from 'semantic-ui-react'
 
 const Dashboard = () => {
@@ -22,7 +23,7 @@ const Dashboard = () => {
             <Grid.Row columns={2}>
                 <Grid.Column>
                     <Segment>
-                        <TemperatureChart />
+                        <ComputerTemperatureChart />
                     </Segment>
                 </Grid.Column>
                 <Grid.Column>
