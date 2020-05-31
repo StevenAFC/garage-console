@@ -1,24 +1,21 @@
 import React from 'react';
 import RadialChart from './RadialChart'
-var fs = require("fs")
+var si = require("systeminformation")
 
 const ComputerTemperatureChart = () => {
 
-    var temp_c = 0;
+    var cpu_temp;
 
-    try {
-        const temp = fs.readFileSync("/sys/class/thermal_zone0/temp")
-        temp_c = temp / 1000
-    } catch {
-        temp_c = 0;
-    }
+    si.cpuTemperature()
+        .then((d => { cpu_temp = d }));
 
+    console.log(cpu_temp)
 
   return (
     <RadialChart
         max = {90}
-        value = {temp_c}
-        label = {`CPU ${temp_c}°c`}
+        value = {cpu_temp}
+        label = {`CPU ${cpu_temp}°c`}
         colour = "#0d8abf"
     />
   )
