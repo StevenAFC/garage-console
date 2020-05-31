@@ -1,51 +1,66 @@
-import React, { PureComponent } from 'react';
-import {
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
-} from 'recharts';
+import React from 'react';
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import * as d3 from 'd3';
+import { ResponsiveContainer, AreaChart, XAxis, YAxis, CartesianGrid, Area } from 'recharts';
+import moment from 'moment'
 
-const data = [
-  {
-    name: 'Page A', uv: 4000, pv: 2400, amt: 2400,
-  },
-  {
-    name: 'Page B', uv: 3000, pv: 1398, amt: 2210,
-  },
-  {
-    name: 'Page C', uv: 2000, pv: 9800, amt: 2290,
-  },
-  {
-    name: 'Page D', uv: 2780, pv: 3908, amt: 2000,
-  },
-  {
-    name: 'Page E', uv: 1890, pv: 4800, amt: 2181,
-  },
-  {
-    name: 'Page F', uv: 2390, pv: 3800, amt: 2500,
-  },
-  {
-    name: 'Page G', uv: 3490, pv: 4300, amt: 2100,
-  },
-];
+export const GET_ATMOSPHERES = gql`
+    query {
+        Atmospheres {
+            temperature
+            humidity
+            createdAt
+        }
+    }
+`;
 
-export default class Example extends PureComponent {
-  static jsfiddleUrl = 'https://jsfiddle.net/alidingling/Lrffmzfc/';
+const TemperatureChart = () => {
+  const { data, loading, error } = useQuery(GET_ATMOSPHERES);
 
-  render() {
-    return (
-      <AreaChart
-        width={500}
-        height={400}
-        data={data}
-        margin={{
-          top: 10, right: 30, left: 0, bottom: 0,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Area type="monotone" dataKey="uv" stroke="#8884d8" fill="#8884d8" />
-      </AreaChart>
-    );
-  }
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>ERROR</p>;
+  if (!data) return <p>Not found</p>;
+
+  var hour = d3.timeFormat("%Y-%m-%dT%H:00:00.00Z");
+
+  const output = d3.nest()
+    .key(function(d) { return hour(new Date(d.createdAt * 1)) })
+    .rollup(function(d) {
+      return {
+        temperature: d3.mean(d, function(e) { return e.temperature; }),
+        humidity: d3.mean(d, function(e) { return e.humidity; }),
+      }
+    })
+    .entries(data.Atmospheres);
+
+  const chartData = output.map(x => {
+    return {
+      time: new Date(x.key).getTime(),
+      humidity: x.value.humidity,
+      temperature: x.value.temperature
+    }
+  })
+
+  return (
+    <ResponsiveContainer width="80%" height={500}>
+      <AreaChart width={500} height={300} data={chartData}>
+        <XAxis 
+          dataKey="time"
+          domain = {['auto', 'auto']}
+          name = 'Time'
+          scale ='time'
+          tickFormatter = {(unixTime) => moment(unixTime).format('HH:mm')}
+          type = 'number'
+        />
+        <YAxis yAxisId="left" unit="°c" />
+        <YAxis yAxisId="right" orientation="right"  unit="%" />
+        <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>
+        <Area yAxisId="left" type="monotone" dataKey="temperature" stroke="#82ca9d" activeDot={true} />
+        <Area yAxisId="right" type="monotone" dataKey="humidity" stroke="#8884d8" activeDot={true} />
+    </AreaChart>
+  </ResponsiveContainer>
+  )
 }
+
+export default TemperatureChart

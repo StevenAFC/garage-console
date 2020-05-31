@@ -1,5 +1,5 @@
 import React from 'react';
-import TemperatureList from './TemperatureList'
+import TemperatureChart from './TemperatureChart3'
 import './App.css';
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
       <header className="App-header">
         <button>Lights On</button>
         <button>Lights Off</button>
-        <TemperatureList />
+        <TemperatureChart />
       </header>
     </div>
   );
