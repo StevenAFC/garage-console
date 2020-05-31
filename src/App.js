@@ -1,15 +1,21 @@
 import React from 'react';
-import TemperatureChart from './TemperatureChart3'
+import Dashboard from './Dashboard'
+import { Container, Header, Icon } from 'semantic-ui-react'
 import './App.css';
+
+import 'semantic-ui-css/semantic.min.css'
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <button>Lights On</button>
-        <button>Lights Off</button>
-        <TemperatureChart />
-      </header>
+      <Container>
+        <Header as='h2' inverted icon textAlign='center'>
+          <Icon name='warehouse' />
+          Garage Console
+        </Header>
+        <br />
+        <Dashboard />
+      </Container>
     </div>
   );
 }

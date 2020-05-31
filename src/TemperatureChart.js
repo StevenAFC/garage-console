@@ -2,8 +2,9 @@ import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import * as d3 from 'd3';
-import { ResponsiveContainer, AreaChart, XAxis, YAxis, CartesianGrid, Area } from 'recharts';
+import { ResponsiveContainer, AreaChart, XAxis, YAxis, CartesianGrid, Area, Tooltip } from 'recharts';
 import moment from 'moment'
+import { Loader } from 'semantic-ui-react'
 
 export const GET_ATMOSPHERES = gql`
     query {
@@ -18,7 +19,9 @@ export const GET_ATMOSPHERES = gql`
 const TemperatureChart = () => {
   const { data, loading, error } = useQuery(GET_ATMOSPHERES);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return (
+    <Loader>Loading...</Loader>
+  )
   if (error) return <p>ERROR</p>;
   if (!data) return <p>Not found</p>;
 
@@ -43,7 +46,7 @@ const TemperatureChart = () => {
   })
 
   return (
-    <ResponsiveContainer width="80%" height={500}>
+    <ResponsiveContainer height={350}>
       <AreaChart width={500} height={300} data={chartData}>
         <XAxis 
           dataKey="time"
@@ -56,8 +59,26 @@ const TemperatureChart = () => {
         <YAxis yAxisId="left" unit="°c" />
         <YAxis yAxisId="right" orientation="right"  unit="%" />
         <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>
-        <Area yAxisId="left" type="monotone" dataKey="temperature" stroke="#82ca9d" activeDot={true} />
-        <Area yAxisId="right" type="monotone" dataKey="humidity" stroke="#8884d8" activeDot={true} />
+        <Tooltip 
+          labelFormatter={(value) =>  moment(value).format('HH:mm')}
+          formatter={(value) => parseFloat(value).toFixed(1)}
+        />
+        <Area 
+          yAxisId="left" 
+          type="monotone"
+          dataKey="temperature" 
+          //stroke="#82ca9d" 
+          dot={true}
+          activeDot={true} 
+        />
+        <Area 
+          yAxisId="right" 
+          type="monotone" 
+          dataKey="humidity" 
+          //stroke="#8884d8"
+          dot={true}
+          activeDot={true} 
+        />
     </AreaChart>
   </ResponsiveContainer>
   )
