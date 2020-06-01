@@ -9,20 +9,22 @@ export const OPEN_GARAGE_DOOR = gql`
     }
 `;
 
+export const CLOSE_GARAGE_DOOR = gql`
+    query {
+      closeGarageDoor
+    }
+`;
+
 
 const GarageDoorControl = () => {
 
-  const [openGarageDoor, { data, loading }] = useLazyQuery(OPEN_GARAGE_DOOR);
-
-  if (loading) return <p>Loading ...</p>;
-  if (data) {
-    console.log(data);
-  }
+  const [openGarageDoor] = useLazyQuery(OPEN_GARAGE_DOOR, { fetchPolicy: "no-cache" });
+  const [closeGarageDoor] = useLazyQuery(CLOSE_GARAGE_DOOR, { fetchPolicy: "no-cache" });
 
   return (
     <div>
       <Button onClick={() => openGarageDoor()}>Garage Door Open</Button>
-      <Button>Garage Door Close</Button>
+      <Button onClick={() => closeGarageDoor()}>Garage Door Close</Button>
     </div>
   );
 }
