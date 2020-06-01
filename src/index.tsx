@@ -16,14 +16,14 @@ import * as serviceWorker from './serviceWorker';
 const cache = new InMemoryCache();
 
 const httpLink = new HttpLink({
-  uri: 'http://' + process.env.REACT_APP_API_SERVER_IP + '/graphql',
+  uri: 'http://' + process.env.REACT_APP_API_SERVER_IP + ':4000/graphql',
   headers: {
     'client-name': 'Garage Console App',
   },
 })
 
 const wsLink = new WebSocketLink({
-  uri: 'ws://' + process.env.REACT_APP_API_SERVER_IP + '/graphql',
+  uri: 'ws://' + process.env.REACT_APP_API_SERVER_IP + ':4000/graphql',
   options: {
     reconnect: true
   }
