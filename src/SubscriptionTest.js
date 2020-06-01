@@ -1,6 +1,6 @@
 import React from 'react';
 import gql from 'graphql-tag';
- import { useSubscription } from "@apollo/react-hooks";
+import { useSubscription } from "@apollo/react-hooks";
 
 const DOOR_STATUS = gql`
     subscription {
