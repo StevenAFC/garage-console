@@ -1,19 +1,28 @@
 import React from 'react';
 import { Button } from 'semantic-ui-react'
-const Gpio = require('onoff').Gpio;
+import { useLazyQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+
+export const OPEN_GARAGE_DOOR = gql`
+    query {
+      openGarageDoor
+    }
+`;
+
 
 const GarageDoorControl = () => {
 
-    const openDoor = () => {
-        const openPin = new Gpio(17, 'out')
-        openPin.writeSync(1)
-        openPin.unexport()
-    }
+  const [openGarageDoor, { data, loading }] = useLazyQuery(OPEN_GARAGE_DOOR);
+
+  if (loading) return <p>Loading ...</p>;
+  if (data) {
+    console.log(data);
+  }
 
   return (
     <div>
-        <Button onClick={openDoor}>Garage Door Open</Button>
-        <Button>Garage Door Close</Button>
+      <Button onClick={() => openGarageDoor()}>Garage Door Open</Button>
+      <Button>Garage Door Close</Button>
     </div>
   );
 }
