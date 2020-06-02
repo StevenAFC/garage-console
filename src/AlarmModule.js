@@ -6,7 +6,7 @@ import { useSubscription, useQuery } from "@apollo/react-hooks";
 
 const ALERTS = gql`
     subscription {
-        alerts {
+        alert {
             sensorName,
             createdAt
         }
