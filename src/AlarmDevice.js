@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import gql from 'graphql-tag';
 import moment from 'moment';
 import { Card, Icon, Feed } from 'semantic-ui-react';
@@ -7,25 +7,31 @@ import { useSubscription } from "@apollo/react-hooks";
 const ALERTS = gql`
     subscription {
         alert {
-            sensorName,
+            deviceId,
             createdAt
-
         }
     }
 `;
 
 const AlarmDevice = ({ device }) => {
 
-    const { data } = useSubscription(ALERTS);
-    console.log(device)
+    const { data } = useSubscription(ALERTS)
+
+    let alerts = device.alerts;
+    const tripped = data && data.alert.deviceId === device.id
+
+    if (tripped && alerts.length >= 3) {
+        alerts.pop()
+        alerts.unshift(data.alert)
+    }
 
     return (
         <Card width="200">
             <Card.Content>
                 <Card.Header>
                     <Icon 
-                        name={data && data.alert.sensorName === 'REAR_DOOR_CONTACT_SENSOR' ? 'warning circle' : 'circle'} 
-                        color={data && data.alert.sensorName === 'REAR_DOOR_CONTACT_SENSOR' ? 'red' : 'green'} 
+                        name={tripped ? 'warning circle' : 'circle'} 
+                        color={tripped ? 'red' : 'green'} 
                     />
                     {device.name}
                     </Card.Header>
@@ -33,8 +39,8 @@ const AlarmDevice = ({ device }) => {
                     Contact Sensor
                 </Card.Meta>
                 <Feed>
-                    {device.alerts && device.alerts.map((alert) => (
-                        <Feed.Event>
+                    {alerts && alerts.map((alert) => (
+                        <Feed.Event key={alert.id}>
                             <Feed.Label>
                                 <Icon 
                                     name='warning circle' 
@@ -42,7 +48,7 @@ const AlarmDevice = ({ device }) => {
                                 />
                             </Feed.Label>
                             <Feed.Content>
-                                <Feed.Date content={moment.unix(alert.createdAt/1000).fromNow()} />
+                                <Feed.Date content={moment.unix(alert.createdAt/1000-10).fromNow()} />
                                 <Feed.Summary>
                                 Sensor Activated
                                 </Feed.Summary>

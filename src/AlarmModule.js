@@ -8,6 +8,7 @@ import AlarmDevice from './AlarmDevice';
 export const GET_ALARM_DEVICES = gql`
     query {
         getAlarmDevices {
+            id
             name
             createdAt
             alerts {
