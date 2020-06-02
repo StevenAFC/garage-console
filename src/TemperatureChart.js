@@ -8,7 +8,7 @@ import { Loader } from 'semantic-ui-react'
 
 export const GET_ATMOSPHERES = gql`
     query {
-        Atmospheres {
+        atmospheres {
             temperature
             humidity
             createdAt
@@ -35,7 +35,7 @@ const TemperatureChart = () => {
         humidity: d3.mean(d, function(e) { return e.humidity; }),
       }
     })
-    .entries(data.Atmospheres);
+    .entries(data.atmospheres);
 
   const chartData = output.map(x => {
     return {
@@ -67,7 +67,6 @@ const TemperatureChart = () => {
           yAxisId="left" 
           type="monotone"
           dataKey="temperature" 
-          //stroke="#82ca9d" 
           dot={true}
           activeDot={true} 
         />
@@ -75,7 +74,6 @@ const TemperatureChart = () => {
           yAxisId="right" 
           type="monotone" 
           dataKey="humidity" 
-          //stroke="#8884d8"
           dot={true}
           activeDot={true} 
         />
