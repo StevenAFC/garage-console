@@ -17,8 +17,7 @@ const Dashboard = () => {
                 </Grid.Column>
                 <Grid.Column>
                     <Segment>
-                        <GarageDoorControl />
-                        <Button>Lights On / Off</Button>
+                        <AlarmModule />
                     </Segment>
                 </Grid.Column>  
             </Grid.Row>
@@ -30,7 +29,8 @@ const Dashboard = () => {
                 </Grid.Column>
                 <Grid.Column>
                     <Segment>
-                        <AlarmModule />
+                        <GarageDoorControl />
+                        <Button>Lights On / Off</Button>  
                     </Segment>
                 </Grid.Column>
             </Grid.Row>
