@@ -1,31 +1,32 @@
 import React from 'react';
 import { Button } from 'semantic-ui-react'
-import { useLazyQuery } from '@apollo/react-hooks';
+import { Mutation } from '@apollo/react-components';
 import gql from 'graphql-tag';
 
-export const OPEN_GARAGE_DOOR = gql`
-    query {
-      openGarageDoor
-    }
-`;
-
-export const CLOSE_GARAGE_DOOR = gql`
-    query {
-      closeGarageDoor
-    }
+export const DEVICE_PULSE = gql` 
+  mutation DevicePulse ($id: ID!) {
+    devicePulse(id: $id) 
+  }
 `;
 
 
 const GarageDoorControl = () => {
 
-  const [openGarageDoor] = useLazyQuery(OPEN_GARAGE_DOOR, { fetchPolicy: "no-cache" });
-  const [closeGarageDoor] = useLazyQuery(CLOSE_GARAGE_DOOR, { fetchPolicy: "no-cache" });
-
   return (
-    <div>
-      <Button onClick={() => openGarageDoor()}>Garage Door Open</Button>
-      <Button onClick={() => closeGarageDoor()}>Garage Door Close</Button>
-    </div>
+    <Mutation mutation={DEVICE_PULSE}>
+      {(devicePulse, { data }) => (
+        <div>
+          <form
+            onSubmit={e => {
+              e.preventDefault();
+              devicePulse({ variables: { id: 1 } });
+            }}
+          >
+          <Button type="submit">Device Activate</Button>
+          </form>
+        </div>
+      )}
+    </Mutation>
   );
 }
 
