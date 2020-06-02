@@ -18,7 +18,9 @@ const AlarmDevice = ({ device }) => {
                 </Card.Meta>
                 <Feed>
                     {device.alerts && device.alerts.map((alert) => (
-                        <Feed.Event key={alert.id}>
+                        <Feed.Event
+                            key={device.id}                        
+                        >
                             <Feed.Label>
                                 <Icon 
                                     name='warning circle' 

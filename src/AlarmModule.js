@@ -1,8 +1,9 @@
 import React from 'react';
 import gql from 'graphql-tag';
-import { Card, Icon, Button } from 'semantic-ui-react';
-import { Query, Mutation } from '@apollo/react-components';
+import { Card } from 'semantic-ui-react';
+import { Query } from '@apollo/react-components';
 import AlarmDevice from './AlarmDevice';
+import AlarmButton from './AlarmButton';
 
 
 export const GET_ALARM_DEVICES = gql`
@@ -28,12 +29,6 @@ const ALARM_DEVICES = gql`
                 createdAt
             }
         }
-    }
-`;
-
-export const ALARM_STATE = gql` 
-    mutation AlarmState ($state: String!) {
-        alarmState(state: $state) 
     }
 `;
 
@@ -65,6 +60,7 @@ const AlarmModule = () => {
                         {data.alarmDevices && data.alarmDevices.map(device => (
                             <AlarmDevice
                                 device={device}
+                                key={device.id}
                             />
                         ))}
                     </Card.Group>
@@ -72,20 +68,7 @@ const AlarmModule = () => {
                 }}
             </Query>
             <br />
-            <Mutation mutation={ALARM_STATE}>
-                {(alarmState) => (
-                    <div>
-                        <form
-                            onSubmit={e => {
-                            e.preventDefault();
-                            alarmState({ variables: { state: "DEACTIVATE" } });
-                            }}
-                        >
-                            <Button type="submit" negative fluid><Icon name='warning sign' />Disarm</Button>
-                        </form>
-                    </div>
-                )}
-            </Mutation>
+            <AlarmButton />
         </div>
     )
 }

@@ -1,7 +1,6 @@
 import React from 'react';
 import TemperatureChart from './TemperatureChart'
 import GarageDoorControl from './GarageDoorControl'
-import SubscriptionTest from './SubscriptionTest'
 import AlarmModule from './AlarmModule'
 import { Button, Grid, Segment } from 'semantic-ui-react'
 
@@ -24,7 +23,7 @@ const Dashboard = () => {
             <Grid.Row columns={2}>
                 <Grid.Column>
                     <Segment>
-                        <SubscriptionTest />
+                        Empty
                     </Segment>
                 </Grid.Column>
                 <Grid.Column>
