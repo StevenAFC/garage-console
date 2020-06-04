@@ -2,17 +2,9 @@ import React from "react";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import * as d3 from "d3";
-import {
-  ResponsiveContainer,
-  AreaChart,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Area,
-  Tooltip,
-} from "recharts";
 import moment from "moment";
 import { Loader } from "semantic-ui-react";
+import Chart from "react-apexcharts";
 
 export const GET_ATMOSPHERES = gql`
   query {
@@ -52,48 +44,72 @@ const TemperatureChart = () => {
     })
     .entries(data.atmospheres);
 
-  const chartData = output.map((x) => {
-    return {
-      time: new Date(x.key).getTime(),
-      humidity: x.value.humidity,
-      temperature: x.value.temperature,
-    };
+  let temperatureData = [];
+  let humidityData = [];
+
+  output.forEach((o) => {
+    temperatureData.push([
+      moment(o.key).unix() * 1000,
+      o.value.temperature.toFixed(1),
+    ]);
+    humidityData.push([
+      moment(o.key).unix() * 1000,
+      o.value.humidity.toFixed(1),
+    ]);
   });
 
   return (
-    <ResponsiveContainer height={350}>
-      <AreaChart data={chartData}>
-        <XAxis
-          dataKey="time"
-          domain={["auto", "auto"]}
-          name="Time"
-          scale="time"
-          tickFormatter={(unixTime) => moment(unixTime).format("HH:mm")}
-          type="number"
-        />
-        <YAxis yAxisId="left" unit="°c" />
-        <YAxis yAxisId="right" orientation="right" unit="%" />
-        <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-        <Tooltip
-          labelFormatter={(value) => moment(value).format("HH:mm")}
-          formatter={(value) => parseFloat(value).toFixed(1)}
-        />
-        <Area
-          yAxisId="left"
-          type="monotone"
-          dataKey="temperature"
-          dot={true}
-          activeDot={true}
-        />
-        <Area
-          yAxisId="right"
-          type="monotone"
-          dataKey="humidity"
-          dot={true}
-          activeDot={true}
-        />
-      </AreaChart>
-    </ResponsiveContainer>
+    <div className="mixed-chart">
+      <Chart
+        series={[
+          {
+            name: "Temperature",
+            type: "area",
+            data: temperatureData,
+            zoom: {
+              autoScaleYaxis: true,
+            },
+          },
+          {
+            name: "Humidity",
+            type: "area",
+            data: humidityData,
+            zoom: {
+              autoScaleYaxis: true,
+            },
+          },
+        ]}
+        options={{
+          chart: {
+            id: "area-datetime",
+            type: "area",
+          },
+          stroke: {
+            curve: "smooth",
+          },
+          dataLabels: {
+            enabled: false,
+          },
+          yaxis: [
+            {
+              title: {
+                text: "Temperature",
+              },
+            },
+            {
+              opposite: true,
+              title: {
+                text: "Humidity",
+              },
+            },
+          ],
+          xaxis: {
+            type: "datetime",
+          },
+        }}
+        type={"area"}
+      />
+    </div>
   );
 };
 
