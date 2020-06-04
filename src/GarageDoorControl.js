@@ -10,7 +10,7 @@ export const DEVICE_PULSE = gql`
 `;
 
 
-const GarageDoorControl = () => {
+const GarageDoorControl = ({ id, name }) => {
 
   return (
     <Mutation mutation={DEVICE_PULSE}>
@@ -19,10 +19,10 @@ const GarageDoorControl = () => {
           <form
             onSubmit={e => {
               e.preventDefault();
-              devicePulse({ variables: { id: 1 } });
+              devicePulse({ variables: { id } });
             }}
           >
-          <Button type="submit">Device Activate</Button>
+          <Button type="submit">{name}</Button>
           </form>
         </div>
       )}

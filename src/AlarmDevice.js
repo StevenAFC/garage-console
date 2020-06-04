@@ -13,9 +13,6 @@ const AlarmDevice = ({ device }) => {
                     />
                     {device.name}
                     </Card.Header>
-                <Card.Meta>
-                    Contact Sensor
-                </Card.Meta>
                 <Feed>
                     {device.alerts && device.alerts.map((alert) => (
                         <Feed.Event
@@ -28,7 +25,7 @@ const AlarmDevice = ({ device }) => {
                                 />
                             </Feed.Label>
                             <Feed.Content>
-                                <Feed.Date content={moment.unix(alert.createdAt/1000-10).fromNow()} />
+                                <Feed.Date content={moment.unix(alert.createdAt/1000).fromNow()} />
                                 <Feed.Summary>
                                 Sensor Activated
                                 </Feed.Summary>
