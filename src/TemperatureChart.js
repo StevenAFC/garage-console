@@ -34,10 +34,10 @@ const TemperatureChart = () => {
     })
     .rollup(function (d) {
       return {
-        temperature: d3.mean(d, function (e) {
+        temperature: d3.median(d, function (e) {
           return e.temperature;
         }),
-        humidity: d3.mean(d, function (e) {
+        humidity: d3.median(d, function (e) {
           return e.humidity;
         }),
       };
