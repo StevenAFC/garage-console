@@ -1,6 +1,6 @@
 import React from "react";
 import TemperatureChart from "./TemperatureChart";
-import GarageDoorControl from "./GarageDoorControl";
+import Control from "./Control";
 import AlarmModule from "./AlarmModule";
 import { Grid, Segment } from "semantic-ui-react";
 
@@ -26,8 +26,9 @@ const Dashboard = () => {
           </Grid.Column>
           <Grid.Column>
             <Segment>
-              <GarageDoorControl name={"Garage Door Open"} id={1} />
-              <GarageDoorControl name={"Lights"} id={5} />
+              <Control name={"Garage Door Open"} id={1} />
+              <Control name={"Lights"} id={5} />
+              <Control name={"Garage Door Close"} id={6} />
             </Segment>
           </Grid.Column>
         </Grid.Row>

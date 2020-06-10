@@ -9,7 +9,7 @@ export const DEVICE_PULSE = gql`
   }
 `;
 
-const GarageDoorControl = ({ id, name }) => {
+const Control = ({ id, name }) => {
   return (
     <Mutation mutation={DEVICE_PULSE}>
       {(devicePulse, { data }) => (
@@ -28,4 +28,4 @@ const GarageDoorControl = ({ id, name }) => {
   );
 };
 
-export default GarageDoorControl;
+export default Control;
