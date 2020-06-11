@@ -1,15 +1,20 @@
-import React from "react";
-import { Button } from "semantic-ui-react";
+import React, { useState } from "react";
+import { Button, Icon } from "semantic-ui-react";
 import { Mutation } from "@apollo/react-components";
 import gql from "graphql-tag";
 
 export const DEVICE_PULSE = gql`
   mutation DevicePulse($id: ID!) {
-    devicePulse(id: $id)
+    devicePulse(id: $id) {
+      state
+      duration
+    }
   }
 `;
 
-const Control = ({ id, name }) => {
+const Control = ({ device }) => {
+  const [disabled, setDisabled] = useState(false);
+  const [loading, setLoading] = useState(false);
   return (
     <Mutation mutation={DEVICE_PULSE}>
       {(devicePulse, { data }) => (
@@ -17,10 +22,38 @@ const Control = ({ id, name }) => {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              devicePulse({ variables: { id } });
+              setDisabled(true);
+              devicePulse({ variables: { id: device.id } }).then((response) => {
+                console.log(response.data);
+                if (
+                  response.data.devicePulse &&
+                  response.data.devicePulse.duration
+                ) {
+                  console.log("true");
+                  setLoading(true);
+                  setTimeout(() => {
+                    console.log("false");
+                    setLoading(false);
+                  }, response.data.devicePulse.duration);
+                }
+              });
+
+              setDisabled(false);
             }}
           >
-            <Button type="submit">{name}</Button>
+            <Button
+              color={device.color}
+              icon
+              fluid
+              disabled={disabled}
+              type="submit"
+              labelPosition="left"
+              loading={loading}
+              style={{ marginBottom: 5 }}
+            >
+              {device.icon ? <Icon name={device.icon} /> : null}
+              {device.name}
+            </Button>
           </form>
         </div>
       )}
