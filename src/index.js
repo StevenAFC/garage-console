@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import { ApolloClient } from "apollo-client";
-import { InMemoryCache, NormalizedCacheObject } from "apollo-cache-inmemory";
+import { InMemoryCache } from "apollo-cache-inmemory";
 import { HttpLink } from "apollo-link-http";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { WebSocketLink } from "apollo-link-ws";
@@ -19,6 +19,7 @@ const httpLink = new HttpLink({
   uri: "http://" + process.env.REACT_APP_API_SERVER_IP + ":4000/graphql",
   headers: {
     "client-name": "Garage Console App",
+    token: localStorage.getItem("token"),
   },
 });
 
@@ -41,7 +42,7 @@ const link = split(
   httpLink
 );
 
-const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
+const client = new ApolloClient({
   cache,
   link: link,
 });
