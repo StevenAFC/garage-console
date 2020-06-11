@@ -15,6 +15,7 @@ export const DEVICE_PULSE = gql`
 const Control = ({ device }) => {
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [to, setTo] = useState(null);
   return (
     <Mutation mutation={DEVICE_PULSE}>
       {(devicePulse, { data }) => (
@@ -24,17 +25,21 @@ const Control = ({ device }) => {
               e.preventDefault();
               setDisabled(true);
               devicePulse({ variables: { id: device.id } }).then((response) => {
-                console.log(response.data);
                 if (
                   response.data.devicePulse &&
                   response.data.devicePulse.duration
                 ) {
-                  console.log("true");
-                  setLoading(true);
-                  setTimeout(() => {
-                    console.log("false");
+                  if (loading) {
                     setLoading(false);
-                  }, response.data.devicePulse.duration);
+                    clearTimeout(to);
+                  } else {
+                    setLoading(true);
+                    setTo(
+                      setTimeout(() => {
+                        setLoading(false);
+                      }, response.data.devicePulse.duration)
+                    );
+                  }
                 }
               });
 
