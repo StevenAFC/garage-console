@@ -11,19 +11,16 @@ const Dashboard = () => {
         <Grid.Row columns={2}>
           <Grid.Column>
             <Segment>
-              <TemperatureChart />
+              <AlarmModule />
             </Segment>
           </Grid.Column>
           <Grid.Column>
             <Segment>
-              <AlarmModule />
+              <TemperatureChart />
             </Segment>
           </Grid.Column>
         </Grid.Row>
         <Grid.Row columns={2}>
-          <Grid.Column>
-            <Segment>Empty</Segment>
-          </Grid.Column>
           <Grid.Column>
             <Segment>
               <Control name={"Garage Door Open"} id={1} />
