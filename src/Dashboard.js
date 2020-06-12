@@ -3,6 +3,7 @@ import TemperatureChart from "./TemperatureChart";
 import ControlPanel from "./ControlPanel";
 import AlarmModule from "./AlarmModule";
 import { Grid, Segment } from "semantic-ui-react";
+import ComputerTemperatureChart from "./ComputerTemperatureChart";
 
 const Dashboard = () => {
   return (
@@ -24,6 +25,11 @@ const Dashboard = () => {
           <Grid.Column>
             <Segment>
               <ControlPanel />
+            </Segment>
+          </Grid.Column>
+          <Grid.Column>
+            <Segment>
+              <ComputerTemperatureChart />
             </Segment>
           </Grid.Column>
         </Grid.Row>
