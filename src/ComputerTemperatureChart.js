@@ -14,8 +14,8 @@ export const GET_PI_STATUS = gql`
 const ComputerTemperatureChart = () => {
   return (
     <div>
-      <Query query={GET_PI_STATUS}>
-        {({ loading, error, data, subscribeToMore }) => {
+      <Query query={GET_PI_STATUS} pollInterval={1000}>
+        {({ loading, error, data }) => {
           if (loading) return "Loading...";
           if (error) return `Error! ${error.message}`;
 
