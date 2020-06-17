@@ -10,7 +10,7 @@ import "./App.css";
 
 import "semantic-ui-css/semantic.min.css";
 
-function App() {
+const App = () => {
   return (
     <div className="App" style={{ paddingTop: 5 }}>
       <Router>
@@ -27,6 +27,6 @@ function App() {
       </Router>
     </div>
   );
-}
+};
 
 export default App;
