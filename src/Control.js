@@ -36,7 +36,6 @@ const Control = ({ deviceState: { device, state } }) => {
             >
               {device.icon ? <Icon name={device.icon} /> : null}
               {device.name}
-              {state.state ? " - On" : " - Off"}
             </Button>
           </form>
         </div>
