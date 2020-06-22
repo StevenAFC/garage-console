@@ -27,6 +27,9 @@ const wsLink = new WebSocketLink({
   uri: "ws://" + process.env.REACT_APP_API_SERVER_IP + ":4000/graphql",
   options: {
     reconnect: true,
+    connectionParams: {
+      token: localStorage.getItem("token"),
+    },
   },
 });
 
