@@ -19,7 +19,7 @@ RUN npm install
 RUN npm run-script build
 
 # Create new image
-FROM node:11
+FROM node:12
 
 # Set work directory to /app
 WORKDIR /app
@@ -31,6 +31,7 @@ COPY --from=builder /app/build build
 
 # Set environment to production
 ENV NODE_ENV production
+ENV REACT_APP_API_SERVER_IP API_SERVER
 
 # Install dependencies
 RUN npm install
