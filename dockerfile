@@ -1,4 +1,4 @@
-FROM node:9 as builder
+FROM node:current as builder
 
 # Set work directory to /app
 WORKDIR /app
@@ -24,7 +24,7 @@ RUN npm install
 RUN npm run-script build
 
 # Create new image
-FROM node:12
+FROM node:current
 
 # Set work directory to /app
 WORKDIR /app
