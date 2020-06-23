@@ -6,6 +6,11 @@ WORKDIR /app
 # File Author / Maintainer
 LABEL authors="Steven Beeching <steven.beeching@gmail.com>"
 
+# Expect API_SERVER argument
+ARG API_SERVER
+
+RUN echo "Oh dang look at that $API_SERVER"
+
 # Copy required files to build application
 COPY src src
 COPY public public
@@ -31,7 +36,7 @@ COPY --from=builder /app/build build
 
 # Set environment to production
 ENV NODE_ENV production
-ENV REACT_APP_API_SERVER_IP API_SERVER
+ENV REACT_APP_API_SERVER_IP $API_SERVER
 
 # Install dependencies
 RUN npm install
