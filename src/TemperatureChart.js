@@ -22,7 +22,7 @@ const TemperatureChart = () => {
   });
 
   if (loading) return <Loader>Loading...</Loader>;
-  if (error) return <p>{error}</p>;
+  if (error) return `Error! ${error.message}`;
   if (!data) return <p>Not found</p>;
 
   var hour = d3.timeFormat("%Y-%m-%dT%H:00:00.00Z");
