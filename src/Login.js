@@ -46,11 +46,10 @@ const Login = () => {
               }).then((response) => {
                 if (response.data.login && response.data.login.token) {
                   localStorage.setItem("token", response.data.login.token);
-                  console.log("Login token set");
                   setSubmitting(false);
                   history.push("/");
                 } else {
-                  console.log("Failure");
+                  console.log("Failed to login");
                   setSubmitting(false);
                 }
               });

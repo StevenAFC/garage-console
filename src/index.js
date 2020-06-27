@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { HttpLink } from "apollo-link-http";
+import { setContext } from "apollo-link-context";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { WebSocketLink } from "apollo-link-ws";
 import { split } from "apollo-link";
@@ -13,10 +14,15 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
-const cache = new InMemoryCache();
+const setAuthorizationLink = setContext((request, previousContext) => ({
+  headers: {
+    ...previousContext.headers,
+    token: localStorage.getItem("token"),
+  },
+}));
 
 const httpLink = new HttpLink({
-  uri: "http://" + process.env.REACT_APP_API_SERVER_IP + ":4000/graphql",
+  uri: "https://" + process.env.REACT_APP_API_SERVER_IP + "/graphql",
   headers: {
     "client-name": "Garage Console App",
     token: localStorage.getItem("token"),
@@ -24,7 +30,7 @@ const httpLink = new HttpLink({
 });
 
 const wsLink = new WebSocketLink({
-  uri: "ws://" + process.env.REACT_APP_API_SERVER_IP + ":4000/graphql",
+  uri: "wss://" + process.env.REACT_APP_API_SERVER_IP + "/graphql",
   options: {
     reconnect: true,
     connectionParams: {
@@ -46,8 +52,8 @@ const link = split(
 );
 
 const client = new ApolloClient({
-  cache,
-  link: link,
+  cache: new InMemoryCache(),
+  link: setAuthorizationLink.concat(link),
 });
 
 ReactDOM.render(
