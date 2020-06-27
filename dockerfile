@@ -1,4 +1,4 @@
-FROM node:current as builder
+FROM node:lts as builder
 
 # Set work directory to /app
 WORKDIR /app
@@ -16,6 +16,7 @@ COPY src src
 COPY public public
 #COPY package-lock.json .
 COPY package.json .
+COPY .env .
 
 # Install dependencies
 RUN npm install
@@ -24,14 +25,14 @@ RUN npm install
 RUN npm run-script build
 
 # Create new image
-FROM node:current
+FROM node:lts
 
 # Set work directory to /app
 WORKDIR /app
 
 # Copy required files
 # COPY package-lock.json .
-COPY package.json .
+# COPY package.json .
 COPY --from=builder /app/build build
 
 # Set environment to production
@@ -39,7 +40,7 @@ ENV NODE_ENV production
 ENV REACT_APP_API_SERVER_IP $API_SERVER
 
 # Install dependencies
-RUN npm install
+# RUN npm install
 RUN npm install -g serve
 
 EXPOSE 5000
