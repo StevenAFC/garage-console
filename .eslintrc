@@ -2,6 +2,7 @@
     "extends": "react-app",
     "plugins": ["prettier"],
     "rules": {
+      "linebreak-style": "windows",
       "prettier/prettier": "error"
     }
   }
