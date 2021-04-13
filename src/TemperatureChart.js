@@ -27,36 +27,27 @@ const TemperatureChart = () => {
 
   var hour = d3.timeFormat("%Y-%m-%dT%H:00:00.00Z");
 
-  const output = d3
-    .nest()
-    .key(function (d) {
-      return hour(new Date(d.createdAt * 1));
-    })
-    .rollup(function (d) {
+  const output = d3.rollup(
+    data.atmospheres,
+    (v) => {
       return {
-        temperature: d3.median(d, function (e) {
-          return e.temperature;
-        }),
-        humidity: d3.median(d, function (e) {
-          return e.humidity;
-        }),
+        temperature: d3.median(v, (d) => d.temperature),
+        humidity: d3.median(v, (d) => d.humidity),
       };
-    })
-    .entries(data.atmospheres);
+    },
+    (d) => hour(new Date(d.createdAt * 1))
+  );
 
   let temperatureData = [];
   let humidityData = [];
 
-  output.forEach((o) => {
-    temperatureData.push([
-      moment(o.key).unix() * 1000,
-      o.value.temperature.toFixed(1),
-    ]);
-    humidityData.push([
-      moment(o.key).unix() * 1000,
-      o.value.humidity.toFixed(1),
-    ]);
+  output.forEach((o, a) => {
+    temperatureData.push([moment(a).unix() * 1000, o.temperature.toFixed(1)]);
+    humidityData.push([moment(a).unix() * 1000, o.humidity.toFixed(1)]);
   });
+
+  temperatureData = temperatureData.sort((a, b) => a[0] - b[0]);
+  humidityData = humidityData.sort((a, b) => a[0] - b[0]);
 
   return (
     <div className="mixed-chart">
