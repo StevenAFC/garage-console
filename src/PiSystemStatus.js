@@ -52,7 +52,7 @@ const PiSystemStatus = () => {
                   }
                   label={`Memory`}
                   unit="%"
-                  color="#CB4646"
+                  color="#62CB46"
                 />
               </Grid.Column>
             </Grid>
