@@ -19,9 +19,9 @@ const RadialChart = ({ max, value, label, color, unit }) => {
           grid: {
             padding: {
               top: -5,
-              right: -28,
+              right: -5,
               bottom: -5,
-              left: -60,
+              left: -28,
             },
           },
           plotOptions: {
@@ -62,14 +62,14 @@ const RadialChart = ({ max, value, label, color, unit }) => {
                   offsetY: -13,
                   show: true,
                   color: "#888",
-                  fontSize: "15px",
+                  fontSize: "12px",
                 },
                 value: {
                   formatter: (val) => {
                     return parseInt(val) + (unit ? unit : "");
                   },
                   color: "#111",
-                  fontSize: "30px",
+                  fontSize: "25px",
                   show: true,
                   offsetY: 7,
                 },
@@ -77,16 +77,7 @@ const RadialChart = ({ max, value, label, color, unit }) => {
             },
           },
           fill: {
-            type: "gradient",
-            gradient: {
-              shade: "dark",
-              type: "horizontal",
-              shadeIntensity: 0.5,
-              inverseColors: false,
-              opacityFrom: 1,
-              opacityTo: 1,
-              stops: [0, 100],
-            },
+            type: "solid",
           },
           stroke: {
             lineCap: "round",
