@@ -16,19 +16,21 @@ export const GET_PI_STATUS = gql`
 `;
 
 const PiSystemStatus = () => {
+  let cachedData = [];
+
   return (
     <div>
       <Query query={GET_PI_STATUS} pollInterval={3000}>
         {({ loading, error, data }) => {
           if (loading) return "Loading...";
-          if (error) return `Error! ${error.message}`;
+          if (!error) cachedData = data;
 
           return (
             <Grid columns={3} stackable>
               <Grid.Column>
                 <RadialChart
                   max={90}
-                  value={data.piStatus && data.piStatus.cpuLoad}
+                  value={cachedData.piStatus && cachedData.piStatus.cpuLoad}
                   label={`CPU Load`}
                   unit="%"
                   color="#0091F6"
@@ -37,7 +39,7 @@ const PiSystemStatus = () => {
               <Grid.Column>
                 <RadialChart
                   max={90}
-                  value={data.piStatus && data.piStatus.temp}
+                  value={cachedData.piStatus && cachedData.piStatus.temp}
                   label={`CPU Temp`}
                   unit="°C"
                   color="#CB4646"
@@ -47,8 +49,9 @@ const PiSystemStatus = () => {
                 <RadialChart
                   max={90}
                   value={
-                    data.piStatus &&
-                    (100 / data.piStatus.totalMemory) * data.piStatus.usedMemory
+                    cachedData.piStatus &&
+                    (100 / cachedData.piStatus.totalMemory) *
+                      cachedData.piStatus.usedMemory
                   }
                   label={`Memory`}
                   unit="%"
