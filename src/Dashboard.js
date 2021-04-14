@@ -3,7 +3,7 @@ import TemperatureChart from "./TemperatureChart";
 import ControlPanel from "./ControlPanel";
 import AlarmModule from "./AlarmModule";
 import { Grid, Segment } from "semantic-ui-react";
-import ComputerTemperatureChart from "./ComputerTemperatureChart";
+import PiSystemStatus from "./PiSystemStatus";
 
 const Dashboard = () => {
   return (
@@ -29,7 +29,7 @@ const Dashboard = () => {
           </Grid.Column>
           <Grid.Column>
             <Segment>
-              <ComputerTemperatureChart />
+              <PiSystemStatus />
             </Segment>
           </Grid.Column>
         </Grid.Row>
