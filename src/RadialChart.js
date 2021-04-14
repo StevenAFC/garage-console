@@ -8,20 +8,12 @@ const RadialChart = ({ max, value, label, color, unit }) => {
     <div className="radialBar">
       <Chart
         series={[displayedValue]}
-        width="120%"
+        height="200"
         options={{
           colors: [color],
           chart: {
             toolbar: {
               show: false,
-            },
-          },
-          grid: {
-            padding: {
-              top: -5,
-              right: -5,
-              bottom: -5,
-              left: -28,
             },
           },
           plotOptions: {

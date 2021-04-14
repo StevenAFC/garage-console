@@ -24,7 +24,7 @@ const PiSystemStatus = () => {
           if (error) return `Error! ${error.message}`;
 
           return (
-            <Grid columns={3}>
+            <Grid columns={3} stackable>
               <Grid.Column>
                 <RadialChart
                   max={90}
