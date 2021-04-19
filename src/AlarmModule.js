@@ -1,16 +1,15 @@
 import React from "react";
 import gql from "graphql-tag";
-import { Card } from "semantic-ui-react";
-import { Query } from "@apollo/react-components";
+import { Card, Loader } from "semantic-ui-react";
 import AlarmDevice from "./AlarmDevice";
 import AlarmButton from "./AlarmButton";
+import { useQuery } from "@apollo/react-hooks";
 
-export const GET_ALARM_DEVICES = gql`
+const GET_ALARM_DEVICES = gql`
   query {
     alarmDevices {
       id
       name
-      alarmTriggered
       alerts {
         createdAt
       }
@@ -18,12 +17,24 @@ export const GET_ALARM_DEVICES = gql`
   }
 `;
 
-const ALARM_DEVICES = gql`
+const GET_DEVICE_STATES = gql`
+  query {
+    deviceStates {
+      device {
+        id
+      }
+      state {
+        state
+      }
+    }
+  }
+`;
+
+const SUBSCRIBE_ALARM_DEVICES = gql`
   subscription {
     alarmDevices {
       id
       name
-      alarmTriggered
       alerts {
         createdAt
       }
@@ -31,36 +42,42 @@ const ALARM_DEVICES = gql`
   }
 `;
 
+const subscribeToAlarmDevices = (subscribeToMore) => {
+  subscribeToMore({
+    document: SUBSCRIBE_ALARM_DEVICES,
+    updateQuery: (prev, { subscriptionData }) => {
+      if (!subscriptionData) return prev;
+      return subscriptionData.data;
+    },
+  });
+};
+
 const AlarmModule = () => {
-  const subscribeToDevices = (subscribeToMore) => {
-    subscribeToMore({
-      document: ALARM_DEVICES,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) return prev;
-        return subscriptionData.data;
-      },
-    });
-  };
+  const { data: alarmDevices, loadingDevices, subscribeToMore } = useQuery(
+    GET_ALARM_DEVICES
+  );
+  const { data: deviceStates, loadingStates } = useQuery(GET_DEVICE_STATES);
+
+  if (loadingDevices || loadingStates)
+    return <Loader active>Loading Device</Loader>;
+
+  subscribeToMore && subscribeToAlarmDevices(subscribeToMore);
 
   return (
     <div>
-      <Query query={GET_ALARM_DEVICES}>
-        {({ loading, error, data, subscribeToMore }) => {
-          if (loading) return "Loading...";
-          if (error) return `Error! ${error.message}`;
-
-          subscribeToDevices(subscribeToMore);
-
-          return (
-            <Card.Group itemsPerRow={2}>
-              {data.alarmDevices &&
-                data.alarmDevices.map((device) => (
-                  <AlarmDevice device={device} key={device.id} />
-                ))}
-            </Card.Group>
-          );
-        }}
-      </Query>
+      <Card.Group itemsPerRow={2}>
+        {alarmDevices &&
+          alarmDevices.alarmDevices.map((device) => (
+            <AlarmDevice
+              device={device}
+              key={device.id}
+              deviceState={
+                deviceStates &&
+                deviceStates.deviceStates.find((d) => d.device.id === device.id)
+              }
+            />
+          ))}
+      </Card.Group>
       <br />
       <AlarmButton />
     </div>

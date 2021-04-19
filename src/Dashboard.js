@@ -3,12 +3,14 @@ import TemperatureChart from "./TemperatureChart";
 import ControlPanel from "./ControlPanel";
 import AlarmModule from "./AlarmModule";
 import { Grid, Segment } from "semantic-ui-react";
+import AlarmMessage from "./AlarmMessage";
 import PiSystemStatus from "./PiSystemStatus";
 
 const Dashboard = () => {
   return (
     <div>
       <Grid stackable>
+        <AlarmMessage />
         <Grid.Row columns={2}>
           <Grid.Column>
             <Segment>

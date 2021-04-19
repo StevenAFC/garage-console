@@ -1,7 +1,7 @@
 import React from "react";
 import gql from "graphql-tag";
 import { Query } from "@apollo/react-components";
-import { Grid } from "semantic-ui-react";
+import { Grid, Loader } from "semantic-ui-react";
 import RadialChart from "./RadialChart";
 
 export const GET_PI_STATUS = gql`
@@ -22,7 +22,12 @@ const PiSystemStatus = () => {
     <div>
       <Query query={GET_PI_STATUS} pollInterval={3000}>
         {({ loading, error, data }) => {
-          if (loading) return "Loading...";
+          if (loading)
+            return (
+              <Grid>
+                <Loader active />
+              </Grid>
+            );
           if (!error) cachedData = data;
 
           return (

@@ -3,23 +3,30 @@ import moment from "moment";
 import { Card, Icon, Feed } from "semantic-ui-react";
 
 const convertDate = (date) => {
-  let d = moment.unix(date / 1000).fromNow();
+  let d = moment
+    .unix(date / 1000)
+    .subtract(1, "seconds")
+    .fromNow();
 
   if (d === "Invalid date") {
-    d = moment(date).fromNow();
+    d = moment(date).subtract(1, "seconds").fromNow();
   }
 
   return d;
 };
 
-const AlarmDevice = ({ device }) => {
+const AlarmDevice = ({ device, deviceState }) => {
   return (
     <Card width="200">
       <Card.Content>
         <Card.Header>
           <Icon
-            name={device.alarmTriggered ? "warning circle" : "circle"}
-            color={device.alarmTriggered ? "red" : "green"}
+            name={
+              deviceState && deviceState.state.state
+                ? "circle"
+                : "warning circle"
+            }
+            color={deviceState && deviceState.state.state ? "green" : "red"}
           />
           {device.name}
         </Card.Header>

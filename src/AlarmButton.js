@@ -42,7 +42,7 @@ const AlarmButton = () => {
 
               alarmState({
                 variables: {
-                  state: alarmStatus === "DISARMED" ? "ARM" : "DISARM",
+                  state: alarmStatus === "DISARMED" ? "ARMED" : "DISARMED",
                 },
               });
             }}
