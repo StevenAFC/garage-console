@@ -22,7 +22,7 @@ const setAuthorizationLink = setContext((request, previousContext) => ({
 }));
 
 const httpLink = new HttpLink({
-  uri: "https://" + process.env.REACT_APP_API_SERVER_IP + "/graphql",
+  uri: process.env.REACT_APP_API_SERVER_HTTP,
   headers: {
     "client-name": "Garage Console App",
     token: localStorage.getItem("token"),
@@ -30,7 +30,7 @@ const httpLink = new HttpLink({
 });
 
 const wsLink = new WebSocketLink({
-  uri: "wss://" + process.env.REACT_APP_API_SERVER_IP + "/graphql",
+  uri: process.env.REACT_APP_API_SERVER_WS,
   options: {
     reconnect: true,
     connectionParams: {
