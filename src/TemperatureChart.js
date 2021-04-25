@@ -18,7 +18,7 @@ export const GET_ATMOSPHERES = gql`
 
 const TemperatureChart = () => {
   const { data, loading, error } = useQuery(GET_ATMOSPHERES, {
-    pollInterval: 60000,
+    pollInterval: 180000,
   });
 
   if (loading) return <Loader>Loading...</Loader>;
