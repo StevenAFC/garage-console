@@ -3,7 +3,7 @@ import { Button, Icon } from "semantic-ui-react";
 import { Mutation } from "@apollo/react-components";
 import gql from "graphql-tag";
 
-export const DEVICE_PULSE = gql`
+const DEVICE_PULSE = gql`
   mutation DevicePulse($id: ID!) {
     devicePulse(id: $id)
   }

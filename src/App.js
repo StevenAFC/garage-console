@@ -6,6 +6,7 @@ import Menu from "./Menu";
 import ProtectedRoute from "./ProtectedRoute";
 import { Container } from "semantic-ui-react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import PushMessageSubscriber from "./PushMessageSubscriber";
 import "./App.css";
 
 import "semantic-ui-css/semantic.min.css";
@@ -16,6 +17,7 @@ const App = () => {
       <Router>
         <Container>
           <Menu />
+          <PushMessageSubscriber />
           <Switch>
             <Route path="/login">
               <Login />
