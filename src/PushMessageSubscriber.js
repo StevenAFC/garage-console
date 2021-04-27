@@ -20,8 +20,7 @@ async function subscribe() {
 
     var options = {
       userVisibleOnly: true,
-      applicationServerKey:
-        "BJEztmo_mzPAmwH43eIUjTuLnA5m_pDgKBa4KDc3dtbd8wRIIQKn_BreFhhi5QzBdslmrda_-eog9-miaMHm8N0",
+      applicationServerKey: process.env.REACT_APP_VAPID_PUBLIC_KEY,
     };
 
     let push = await sw.pushManager.subscribe(options);
