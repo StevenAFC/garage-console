@@ -36,6 +36,7 @@ const Control = ({ deviceState: { device, state } }) => {
             >
               {device.icon ? <Icon name={device.icon} /> : null}
               {device.name}
+              {state.state == null ? " (Disconnected)" : ""}
             </Button>
           </form>
         </div>
