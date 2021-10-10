@@ -12,7 +12,7 @@ export const GET_ATMOSPHERE = gql`
   }
 `;
 
-const TemperatureChart = () => {
+const AtmosphereStats = () => {
   const { data, loading, error } = useQuery(GET_ATMOSPHERE, {
     pollInterval: 100000,
   });
@@ -45,23 +45,20 @@ const TemperatureChart = () => {
   }
 
   return (
-    <Statistic.Group widths="two">
+    <Statistic.Group size="small" widths="two">
       <Statistic color={color}>
         <Statistic.Value>
-          <Icon name={`thermometer ${icon}`} size="small" />
-          {temperature}°c
+          <Icon name={`thermometer ${icon}`} />
+          &nbsp;{temperature}°c
         </Statistic.Value>
         <Statistic.Label>Temperature</Statistic.Label>
       </Statistic>
       <Statistic color="blue">
-        <Statistic.Value>
-          <Icon name={`theme`} size="small" />
-          {humidity}%
-        </Statistic.Value>
+        <Statistic.Value>{humidity}%</Statistic.Value>
         <Statistic.Label>Humidity</Statistic.Label>
       </Statistic>
     </Statistic.Group>
   );
 };
 
-export default TemperatureChart;
+export default AtmosphereStats;
