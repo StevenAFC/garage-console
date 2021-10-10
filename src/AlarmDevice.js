@@ -38,8 +38,8 @@ const AlarmDevice = ({ device, deviceState }) => {
                   <Icon name="warning circle" color="grey" />
                 </Feed.Label>
                 <Feed.Content>
-                  <Feed.Date content={convertDate(alert.createdAt)} />
                   <Feed.Summary>Sensor Activated</Feed.Summary>
+                  <Feed.Date content={convertDate(alert.createdAt)} />
                 </Feed.Content>
               </Feed.Event>
             ))}
