@@ -1,11 +1,11 @@
 import React from "react";
-import TemperatureChart from "./TemperatureChart";
 import ControlPanel from "./ControlPanel";
 import AlarmModule from "./AlarmModule";
 import { Grid, Segment } from "semantic-ui-react";
 import AlarmMessage from "./AlarmMessage";
 import PiSystemStatus from "./PiSystemStatus";
 import PushMessageSubscriber from "./PushMessageSubscriber";
+import AtmosphereReading from "./AtmosphereReading";
 
 const Dashboard = () => {
   return (
@@ -21,7 +21,7 @@ const Dashboard = () => {
           </Grid.Column>
           <Grid.Column>
             <Segment>
-              <TemperatureChart />
+              <AtmosphereReading />
             </Segment>
           </Grid.Column>
         </Grid.Row>
