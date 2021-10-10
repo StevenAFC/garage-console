@@ -34,12 +34,9 @@ const AlarmDevice = ({ device, deviceState }) => {
           {device.alerts &&
             device.alerts.map((alert) => (
               <Feed.Event key={device.id}>
-                <Feed.Label>
-                  <Icon name="warning circle" color="grey" />
-                </Feed.Label>
                 <Feed.Content>
-                  <Feed.Summary>Sensor Activated</Feed.Summary>
                   <Feed.Date content={convertDate(alert.createdAt)} />
+                  <Feed.Summary>Sensor last activated</Feed.Summary>
                 </Feed.Content>
               </Feed.Event>
             ))}
