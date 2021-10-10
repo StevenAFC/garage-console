@@ -21,6 +21,8 @@ COPY .env .
 # Install dependencies
 RUN npm install
 
+npm audit fix
+
 # Build application
 RUN npm run-script build
 
