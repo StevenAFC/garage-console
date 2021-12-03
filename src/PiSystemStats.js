@@ -21,7 +21,7 @@ const PiSystemStats = () => {
     <div>
       <Query
         query={GET_PI_STATUS}
-        pollInterval={3000000}
+        pollInterval={3000}
         fetchPolicy={"network-only"}
       >
         {({ loading, error, data }) => {
