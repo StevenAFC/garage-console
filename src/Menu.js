@@ -1,12 +1,12 @@
 import React from "react";
 import { Menu as SemanticMenu, Icon } from "semantic-ui-react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-function Menu() {
-  const history = useHistory();
+function Menu({ authenticated }) {
+  const navigate = useNavigate();
 
-  const handleLogoutClick = (e, { name }) => {
-    history.push("/logout");
+  const handleLogoutClick = () => {
+    navigate("/logout");
   };
 
   return (
@@ -15,9 +15,11 @@ function Menu() {
         <Icon name="warehouse" />
         Garage Console
       </SemanticMenu.Item>
-      <SemanticMenu.Item position="right" link onClick={handleLogoutClick}>
-        Logout
-      </SemanticMenu.Item>
+      {authenticated ? (
+        <SemanticMenu.Item position="right" link onClick={handleLogoutClick}>
+          Logout
+        </SemanticMenu.Item>
+      ) : null}
     </SemanticMenu>
   );
 }

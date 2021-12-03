@@ -3,10 +3,10 @@ import gql from "graphql-tag";
 import { Segment, Form, Button } from "semantic-ui-react";
 import { Mutation } from "@apollo/react-components";
 import { Formik } from "formik";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const LOGIN = gql`
-  mutation($email: String!, $password: String!) {
+  mutation ($email: String!, $password: String!) {
     login(email: $email, password: $password) {
       success
       token
@@ -15,7 +15,7 @@ const LOGIN = gql`
 `;
 
 const Login = () => {
-  let history = useHistory();
+  let navigate = useNavigate();
 
   return (
     <Segment>
@@ -47,7 +47,7 @@ const Login = () => {
                 if (response.data.login && response.data.login.token) {
                   localStorage.setItem("token", response.data.login.token);
                   setSubmitting(false);
-                  history.push("/");
+                  navigate("/");
                 } else {
                   console.log("Failed to login");
                   setSubmitting(false);
