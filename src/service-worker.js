@@ -84,6 +84,7 @@ self.addEventListener("push", (event) => {
       primaryKey: "2",
     },
     actions: [{ action: "close", title: "Close" }],
+    tag: data.tag || "garage",
   };
   event.waitUntil(
     self.registration.showNotification(data.title || "Garage Console", options)
