@@ -1,4 +1,4 @@
-FROM node:lts as builder
+FROM node:lts-alpine3.12 as builder
 
 # Set work directory to /app
 WORKDIR /app
@@ -21,7 +21,7 @@ RUN yarn install
 RUN yarn build
 
 # Create new image
-FROM node:lts
+FROM node:lts-alpine3.12
 
 # Set work directory to /app
 WORKDIR /app
