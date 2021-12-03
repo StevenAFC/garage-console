@@ -11,6 +11,7 @@ const GET_ALARM_DEVICES = gql`
       id
       name
       alerts {
+        id
         createdAt
       }
     }
@@ -24,6 +25,7 @@ const GET_DEVICE_STATES = gql`
         id
       }
       state {
+        id
         state
       }
     }
@@ -36,6 +38,7 @@ const SUBSCRIBE_ALARM_DEVICES = gql`
       id
       name
       alerts {
+        id
         createdAt
       }
     }
@@ -53,10 +56,14 @@ const subscribeToAlarmDevices = (subscribeToMore) => {
 };
 
 const AlarmModule = () => {
-  const { data: alarmDevices, loadingDevices, subscribeToMore } = useQuery(
-    GET_ALARM_DEVICES
-  );
-  const { data: deviceStates, loadingStates } = useQuery(GET_DEVICE_STATES);
+  const {
+    data: alarmDevices,
+    loading: loadingDevices,
+    subscribeToMore,
+  } = useQuery(GET_ALARM_DEVICES);
+
+  const { data: deviceStates, loading: loadingStates } =
+    useQuery(GET_DEVICE_STATES);
 
   if (loadingDevices || loadingStates)
     return <Loader active>Loading Device</Loader>;

@@ -19,7 +19,11 @@ const PiSystemStats = () => {
 
   return (
     <div>
-      <Query query={GET_PI_STATUS} pollInterval={3000}>
+      <Query
+        query={GET_PI_STATUS}
+        pollInterval={3000000}
+        fetchPolicy={"network-only"}
+      >
         {({ loading, error, data }) => {
           if (loading)
             return (

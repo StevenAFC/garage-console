@@ -15,6 +15,7 @@ export const GET_ATMOSPHERE = gql`
 const AtmosphereStats = () => {
   const { data, loading, error } = useQuery(GET_ATMOSPHERE, {
     pollInterval: 100000,
+    fetchPolicy: "network-only",
   });
 
   if (loading) return <Loader>Loading...</Loader>;
