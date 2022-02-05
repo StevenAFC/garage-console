@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+
+  garage:
+    restart: always
+    ports: 
+      - 80:5000
+    build:
+      context: .
+      dockerfile: dockerfile
+    environment:
+      - REACT_APP_API_SERVER_HTTP=${REACT_APP_API_SERVER_HTTP}
+      - REACT_APP_API_SERVER_WS=${REACT_APP_API_SERVER_WS}
+      - REACT_APP_VAPID_PUBLIC_KEY=${REACT_APP_VAPID_PUBLIC_KEY}

@@ -1,10 +1,7 @@
-FROM node:lts-alpine3.12 as builder
+FROM node:lts as builder
 
 # Set work directory to /app
 WORKDIR /app
-
-# Expect API_SERVER argument
-ARG API_SERVER
 
 # Copy required files to build application
 COPY src src
@@ -21,7 +18,7 @@ RUN yarn install
 RUN yarn build
 
 # Create new image
-FROM node:lts-alpine3.12
+FROM node:lts
 
 # Set work directory to /app
 WORKDIR /app
@@ -33,7 +30,6 @@ COPY --from=builder /app/build build
 
 # Set environment to production
 ENV NODE_ENV production
-ENV REACT_APP_API_SERVER_IP $API_SERVER
 
 # Install serve
 RUN yarn global add serve
