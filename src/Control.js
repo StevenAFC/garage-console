@@ -9,7 +9,7 @@ const DEVICE_PULSE = gql`
   }
 `;
 
-const Control = ({ deviceState: { device, state } }) => {
+const Control = ({ device }) => {
   const [disabled, setDisabled] = useState(false);
 
   return (
@@ -26,7 +26,7 @@ const Control = ({ deviceState: { device, state } }) => {
             }}
           >
             <Button
-              color={state.state ? device.color : null}
+              color={device.state ? device.color : null}
               icon
               fluid
               disabled={disabled}
@@ -36,7 +36,7 @@ const Control = ({ deviceState: { device, state } }) => {
             >
               {device.icon ? <Icon name={device.icon} /> : null}
               {device.name}
-              {state.state == null ? " (Disconnected)" : ""}
+              {device.state == null ? " (Disconnected)" : ""}
             </Button>
           </form>
         </div>

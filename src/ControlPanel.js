@@ -2,8 +2,7 @@ import React from "react";
 import Control from "./Control";
 import { Loader, Header } from "semantic-ui-react";
 import gql from "graphql-tag";
-import { Query } from "@apollo/react-components";
-import { useSubscription } from "@apollo/react-hooks";
+import { useQuery, useSubscription } from "@apollo/react-hooks";
 
 const DEVICE_STATE = gql`
   subscription {
@@ -16,19 +15,14 @@ const DEVICE_STATE = gql`
 
 export const GET_DEVICES = gql`
   query {
-    deviceStates {
-      device {
-        id
-        name
-        icon
-        color
-        input
-        alarmDevice
-      }
-      state {
-        id
-        state
-      }
+    devices(input: false, alarmDevice: false) {
+      id
+      name
+      icon
+      color
+      input
+      alarmDevice
+      state
     }
   }
 `;
@@ -36,34 +30,26 @@ export const GET_DEVICES = gql`
 const ControlPanel = () => {
   useSubscription(DEVICE_STATE);
 
-  return (
-    <Query query={GET_DEVICES}>
-      {({ loading, error, data }) => {
-        if (loading) return <Loader active>Loading...</Loader>;
-        if (error) return `Error! ${error.message}`;
+  const {
+    data: devices,
+    loading,
+  } = useQuery(GET_DEVICES);
 
-        return (
-          <div>
-            <Header>Controls</Header>
-            {data.deviceStates &&
-              data.deviceStates
-                .filter(
-                  (deviceState) =>
-                    deviceState.device &&
-                    !deviceState.device.input &&
-                    !deviceState.device.alarmDevice
-                )
-                .map((deviceState) => (
-                  <Control
-                    deviceState={deviceState}
-                    key={deviceState.device.id}
-                  />
-                ))}
-          </div>
-        );
-      }}
-    </Query>
-  );
+  if (loading)
+  return <Loader active>Loading Controls</Loader>;
+
+  return (
+    <div>
+      <Header>Controls</Header>
+      {devices &&
+        devices.devices.map((d) => (
+          <Control
+            device={d}
+            key={d.id}
+          />
+        ))}
+    </div>
+  )
 };
 
 export default ControlPanel;

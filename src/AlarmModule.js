@@ -3,13 +3,14 @@ import gql from "graphql-tag";
 import { Card, Loader, Header } from "semantic-ui-react";
 import AlarmDevice from "./AlarmDevice";
 import AlarmButton from "./AlarmButton";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery, useSubscription } from "@apollo/react-hooks";
 
 const GET_ALARM_DEVICES = gql`
   query {
     devices(input: true, alarmDevice: true) {
       id
       name
+      state
       alerts {
         id
         createdAt
@@ -18,16 +19,11 @@ const GET_ALARM_DEVICES = gql`
   }
 `;
 
-const GET_DEVICE_STATES = gql`
-  query {
-    deviceStates {
-      device {
-        id
-      }
-      state {
-        id
-        state
-      }
+const DEVICE_STATE = gql`
+  subscription {
+    device {
+      id
+      state
     }
   }
 `;
@@ -56,16 +52,15 @@ const subscribeToAlarmDevices = (subscribeToMore) => {
 };
 
 const AlarmModule = () => {
+  useSubscription(DEVICE_STATE);
+  
   const {
-    data: alarmDevices,
+    data: devices,
     loading: loadingDevices,
     subscribeToMore,
   } = useQuery(GET_ALARM_DEVICES);
 
-  const { data: deviceStates, loading: loadingStates } =
-    useQuery(GET_DEVICE_STATES);
-
-  if (loadingDevices || loadingStates)
+  if (loadingDevices)
     return <Loader active>Loading Device</Loader>;
 
   subscribeToMore && subscribeToAlarmDevices(subscribeToMore);
@@ -74,15 +69,12 @@ const AlarmModule = () => {
     <div>
       <Header>Alarm</Header>
       <Card.Group itemsPerRow={2}>
-        {alarmDevices &&
-          alarmDevices.devices.map((device) => (
+        {devices &&
+          devices.devices.map((device) => (
             <AlarmDevice
               device={device}
               key={device.id}
-              deviceState={
-                deviceStates &&
-                deviceStates.deviceStates.find((d) => d.device.id === device.id)
-              }
+              deviceState={device.state}
             />
           ))}
       </Card.Group>

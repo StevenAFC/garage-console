@@ -2,7 +2,7 @@ import React from "react";
 import gql from "graphql-tag";
 import { Card, Header, Loader } from "semantic-ui-react";
 import Device from "./Device";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery, useSubscription } from "@apollo/react-hooks";
 
 const GET_DEVICES = gql`
   query {
@@ -10,6 +10,7 @@ const GET_DEVICES = gql`
       id
       name
       icon
+      state
       alerts {
         id
         createdAt
@@ -18,31 +19,24 @@ const GET_DEVICES = gql`
   }
 `;
 
-const GET_DEVICE_STATES = gql`
-  query {
-    deviceStates {
-      device {
-        id
-      }
-      state {
-        id
-        state
-      }
+const DEVICE_STATE = gql`
+  subscription {
+    device {
+      id
+      state
     }
   }
 `;
 
-
 const DeviceStatusPanel = () => {
+  useSubscription(DEVICE_STATE);
+
   const {
     data: devices,
-    loading: loadingDevices,
+    loading,
   } = useQuery(GET_DEVICES);
 
-  const { data: deviceStates, loading: loadingStates } =
-    useQuery(GET_DEVICE_STATES);
-
-  if (loadingDevices || loadingStates)
+  if (loading)
     return <Loader active>Loading Devices</Loader>;
 
   return (
@@ -54,10 +48,6 @@ const DeviceStatusPanel = () => {
           <Device
           device={device}
           key={device.id}
-          deviceState={
-            deviceStates &&
-            deviceStates.deviceStates.find((d) => d.device.id === device.id)
-          }
           />
         ))}
       </Card.Group>
