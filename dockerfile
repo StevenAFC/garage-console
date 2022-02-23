@@ -4,15 +4,15 @@ FROM node:lts as builder
 WORKDIR /app
 
 # Copy required files to build application
-COPY src src
-COPY public public
-#COPY package-lock.json .
 COPY package.json .
 COPY yarn.lock .
-COPY .env .
-
 # Install dependencies
 RUN yarn install
+
+COPY src src
+COPY public public
+COPY .env .
+
 
 # Build application
 RUN yarn build
