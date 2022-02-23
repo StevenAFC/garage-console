@@ -53,7 +53,7 @@ const subscribeToAlarmDevices = (subscribeToMore) => {
 
 const AlarmModule = () => {
   useSubscription(DEVICE_STATE);
-  
+
   const {
     data: devices,
     loading: loadingDevices,
@@ -74,7 +74,6 @@ const AlarmModule = () => {
             <AlarmDevice
               device={device}
               key={device.id}
-              deviceState={device.state}
             />
           ))}
       </Card.Group>

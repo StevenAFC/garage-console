@@ -15,7 +15,7 @@ const convertDate = (date) => {
   return d;
 };
 
-const AlarmDevice = ({ device, deviceState }) => {
+const AlarmDevice = ({ device }) => {
   return (
     <Card width="200">
       <Card.Content>
@@ -23,16 +23,16 @@ const AlarmDevice = ({ device, deviceState }) => {
           <Icon
             
             name={
-              deviceState && deviceState.state.state
+              device && device.state
                 ? "circle"
                 : "warning circle"
             }
-            color={deviceState && deviceState.state.state ? "green" : "red"}
+            color={device && device.state ? "green" : "red"}
           />
           {device.name}
         </Card.Header>
         <Card.Description>
-          Sensor is currently {deviceState && deviceState.state.state ? "inactive" : " active"}
+          Sensor is currently {device && device.state ? "inactive" : " active"}
         </Card.Description>
       </Card.Content>
       {device.alerts.length > 0 ? 
