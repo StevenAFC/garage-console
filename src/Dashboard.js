@@ -1,6 +1,7 @@
 import React from "react";
 import ControlPanel from "./ControlPanel";
 import AlarmModule from "./AlarmModule";
+import DeviceStatusPanel from "./DeviceStatusPanel";
 import { Grid, Segment } from "semantic-ui-react";
 import AlarmMessage from "./AlarmMessage";
 import PushMessageSubscriber from "./PushMessageSubscriber";
@@ -24,6 +25,9 @@ const Dashboard = () => {
           <Grid.Column>
             <Segment>
               <Stats />
+            </Segment>
+            <Segment>
+              <DeviceStatusPanel />
             </Segment>
           </Grid.Column>
         </Grid.Row>

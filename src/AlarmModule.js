@@ -1,13 +1,13 @@
 import React from "react";
 import gql from "graphql-tag";
-import { Card, Loader } from "semantic-ui-react";
+import { Card, Loader, Header } from "semantic-ui-react";
 import AlarmDevice from "./AlarmDevice";
 import AlarmButton from "./AlarmButton";
 import { useQuery } from "@apollo/react-hooks";
 
 const GET_ALARM_DEVICES = gql`
   query {
-    alarmDevices {
+    devices(input: true, alarmDevice: true) {
       id
       name
       alerts {
@@ -72,9 +72,10 @@ const AlarmModule = () => {
 
   return (
     <div>
+      <Header>Alarm</Header>
       <Card.Group itemsPerRow={2}>
         {alarmDevices &&
-          alarmDevices.alarmDevices.map((device) => (
+          alarmDevices.devices.map((device) => (
             <AlarmDevice
               device={device}
               key={device.id}

@@ -21,6 +21,7 @@ const AlarmDevice = ({ device, deviceState }) => {
       <Card.Content>
         <Card.Header>
           <Icon
+            
             name={
               deviceState && deviceState.state.state
                 ? "circle"
@@ -30,18 +31,25 @@ const AlarmDevice = ({ device, deviceState }) => {
           />
           {device.name}
         </Card.Header>
-        <Feed>
-          {device.alerts &&
-            device.alerts.map((alert) => (
-              <Feed.Event key={device.id}>
-                <Feed.Content>
-                  <Feed.Date content={convertDate(alert.createdAt)} />
-                  <Feed.Summary>Sensor last activated</Feed.Summary>
-                </Feed.Content>
-              </Feed.Event>
-            ))}
-        </Feed>
+        <Card.Description>
+          Sensor is currently {deviceState && deviceState.state.state ? "inactive" : " active"}
+        </Card.Description>
       </Card.Content>
+      {device.alerts.length > 0 ? 
+      <Card.Content extra>
+        <Feed>
+            {device.alerts &&
+              device.alerts.map((alert) => (
+                <Feed.Event key={device.id}>
+                  <Feed.Content>
+                    <Feed.Date content={convertDate(alert.createdAt)} />
+                    <Feed.Summary>Sensor last activated</Feed.Summary>
+                  </Feed.Content>
+                </Feed.Event>
+              ))}
+          </Feed>
+      </Card.Content>
+      : false }
     </Card>
   );
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import Control from "./Control";
-import { Loader } from "semantic-ui-react";
+import { Loader, Header } from "semantic-ui-react";
 import gql from "graphql-tag";
 import { Query } from "@apollo/react-components";
 import { useSubscription } from "@apollo/react-hooks";
@@ -44,6 +44,7 @@ const ControlPanel = () => {
 
         return (
           <div>
+            <Header>Controls</Header>
             {data.deviceStates &&
               data.deviceStates
                 .filter(
