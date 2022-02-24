@@ -21,7 +21,7 @@ const GET_DEVICES = gql`
 
 const DEVICE_STATE = gql`
   subscription {
-    device {
+    deviceState {
       id
       state
     }
