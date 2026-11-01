@@ -10,7 +10,8 @@ import "semantic-ui-css/semantic.min.css";
 const isAuthenticated = () => {
   const token = localStorage.getItem("token");
   try {
-    decode(token);
+    const { exp } = decode(token);
+    if (exp && exp * 1000 < Date.now()) return false;
   } catch (err) {
     console.log(err);
     return false;

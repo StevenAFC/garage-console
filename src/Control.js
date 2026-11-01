@@ -20,9 +20,10 @@ const Control = ({ device }) => {
             onSubmit={(e) => {
               e.preventDefault();
               setDisabled(true);
-              devicePulse({ variables: { id: device.id } }).then(() =>
-                setDisabled(false)
-              );
+              // re-enable on failure too, or a dropped request locks the button
+              devicePulse({ variables: { id: device.id } })
+                .catch((error) => console.log(error))
+                .finally(() => setDisabled(false));
             }}
           >
             <Button

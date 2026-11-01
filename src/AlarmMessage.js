@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import gql from "graphql-tag";
 import { Message, Grid, Icon, Loader } from "semantic-ui-react";
 import { useQuery } from "@apollo/react-hooks";
@@ -15,22 +15,22 @@ const GET_ALARM_STATE = gql`
   }
 `;
 
-const subscribeToAlarmState = (subscribeToMore) => {
+const subscribeToAlarmState = (subscribeToMore) =>
   subscribeToMore({
     document: ALARM_STATUS,
     updateQuery: (prev, { subscriptionData }) => {
-      if (!subscriptionData) return prev;
-      return subscriptionData.data;
+      if (!subscriptionData.data) return prev;
+      return { ...prev, alarmStatus: subscriptionData.data.alarmStatus };
     },
   });
-};
 
 const AlarmMessage = () => {
   const { data, loading, subscribeToMore } = useQuery(GET_ALARM_STATE);
 
-  if (loading) return <Loader active />;
+  // Subscribe once; the returned function unsubscribes on unmount
+  useEffect(() => subscribeToAlarmState(subscribeToMore), [subscribeToMore]);
 
-  subscribeToMore && subscribeToAlarmState(subscribeToMore);
+  if (loading) return <Loader active />;
 
   if (data && data.alarmStatus === "ALERTED") {
     return (

@@ -70,6 +70,21 @@ self.addEventListener("message", (event) => {
   }
 });
 
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  if (event.action === "close") return;
+
+  // Focus the open app if there is one, otherwise open it
+  event.waitUntil(
+    self.clients
+      .matchAll({ type: "window", includeUncontrolled: true })
+      .then((windows) => {
+        const open = windows.find((w) => "focus" in w);
+        return open ? open.focus() : self.clients.openWindow("/");
+      })
+  );
+});
+
 self.addEventListener("push", (event) => {
   var data = {};
   if (event.data) {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import gql from "graphql-tag";
 import { Card, Loader, Header } from "semantic-ui-react";
 import AlarmDevice from "./AlarmDevice";
@@ -41,15 +41,21 @@ const SUBSCRIBE_ALARM_DEVICES = gql`
   }
 `;
 
-const subscribeToAlarmDevices = (subscribeToMore) => {
+const subscribeToAlarmDevices = (subscribeToMore) =>
   subscribeToMore({
     document: SUBSCRIBE_ALARM_DEVICES,
     updateQuery: (prev, { subscriptionData }) => {
-      if (!subscriptionData) return prev;
-      return subscriptionData.data;
+      if (!subscriptionData.data) return prev;
+      const updates = subscriptionData.data.alarmDevices;
+      return {
+        ...prev,
+        devices: prev.devices.map((device) => {
+          const update = updates.find((d) => d.id === device.id);
+          return update ? { ...device, ...update } : device;
+        }),
+      };
     },
   });
-};
 
 const AlarmModule = () => {
   useSubscription(DEVICE_STATE);
@@ -60,10 +66,11 @@ const AlarmModule = () => {
     subscribeToMore,
   } = useQuery(GET_ALARM_DEVICES);
 
+  // Subscribe once; the returned function unsubscribes on unmount
+  useEffect(() => subscribeToAlarmDevices(subscribeToMore), [subscribeToMore]);
+
   if (loading)
     return <Loader active>Loading Device</Loader>;
-
-  subscribeToMore && subscribeToAlarmDevices(subscribeToMore);
 
   return (
     <div>
